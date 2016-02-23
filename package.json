@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "1.0.0",
-  "description": "Get started with React, Redux, and React-Router!",
+  "name": "iplayer-azListing",
+  "version": "0.0.1",
+  "description": "iPlayer a-z listings frontend",
   "main": "index.js",
   "engines": {
     "node": ">=4.2.0",
@@ -59,9 +59,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/teebszet/iplayer-azListing.git"
   },
-  "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
+  "author": "Tim Man <timothyc.man@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "better-npm-run": "0.0.5",
