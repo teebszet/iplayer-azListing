@@ -1,20 +1,20 @@
 iPlayer frontend for a-z listings
 =================================
 
-description:
-------------
+description
+-----------
 
 A frontend for the iPlayer's API displaying a-z listings 
 
-requirements:
--------------
+requirements
+------------
 
-node ^4.3.0
-npm ^3.0.0
+* node ^4.3.0
+* npm ^3.0.0
 
-basics:
--------
+basics
+------
 
-1. git clone git@github.com:teebszet/iplayer-azListing.git
-2. npm install
-3. npm start
+    git clone git@github.com:teebszet/iplayer-azListing.git
+    npm install
+    npm start
