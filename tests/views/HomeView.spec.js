@@ -26,15 +26,25 @@ describe('(View) Home', function () {
     _spies = {}
     _props = {
       // props
+      letter: '',
       ...bindActionCreators({
         //action creators
+        updateLetter: (_spies.updateLetter = sinon.spy()),
       }, _spies.dispatch = sinon.spy())
     }
-
-    //TODO add tests here
 
     _component = shallowRenderWithProps(_props)
     _rendered = renderWithProps(_props)
   })
 
+  it('should render as a <div>.', function () {
+    expect(_component.type).to.equal('div')
+  })
+
+  it('should include an <h1> with welcome text.', function () {
+    const h1 = TestUtils.findRenderedDOMComponentWithTag(_rendered, 'h1')
+
+    expect(h1).to.exist
+    expect(h1.textContent).to.match(/iplayer a-z listings/i)
+  })
 })
