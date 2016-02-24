@@ -27,6 +27,16 @@ describe('(Redux Module) Letter', () => {
   })
 
   describe('(Reducer) Letter', () => {
+    it('should return same state if invalid action', () => {
+      const initialState = ''
+      const expectedState = initialState
+      const action = {
+        type: 'somethingweird',
+        text: 'a'
+      }
+      expect(letterReducer(initialState, action)).to.deep.equal(expectedState)
+    })
+
     it('should return the new letter in state', () => {
       const initialState = ''
       const text = 'a'

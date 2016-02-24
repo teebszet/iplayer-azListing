@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
-// import reducers here
+import letter from './modules/letters'
 
 export default combineReducers({
-  // reducers go here
+  letter,
   router
 })
