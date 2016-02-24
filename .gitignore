@@ -1,5 +1,8 @@
 .DS_STORE
 *.log
+*npm-debug.log*
+
+*.swp
 *.un~
 
 node_modules
