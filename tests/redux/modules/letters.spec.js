@@ -27,22 +27,48 @@ describe('(Redux Module) Letter', () => {
   })
 
   describe('(Reducer) Letter', () => {
-    it('should return same state if invalid action', () => {
-      const initialState = ''
-      const expectedState = initialState
-      const action = {
-        type: 'somethingweird',
-        text: 'a'
-      }
-      expect(letterReducer(initialState, action)).to.deep.equal(expectedState)
-    })
+    let tests = [
+      {
+        should: 'should return same state if invalid action type',
+        initialState: '',
+        expectedState: '',
+        action: {
+          type: 'somethingweird',
+          text: 'a'
+        }
+      },
+      {
+        should: 'should return letter if no initial state',
+        initialState: undefined,
+        expectedState: 'a',
+        action: {
+          type: 'UPDATE_LETTER',
+          text: 'a'
+        }
+      },
+      {
+        should: 'should return \'\' if no initial state and no letter',
+        initialState: undefined,
+        expectedState: '',
+        action: {
+          type: 'UPDATE_LETTER',
+        }
+      },
+      {
+        should: 'should return the new letter in state',
+        initialState: '',
+        action: {
+          type: 'UPDATE_LETTER',
+          text: 'a'
+        },
+        expectedState: 'a'
+      },
+    ]
 
-    it('should return the new letter in state', () => {
-      const initialState = ''
-      const text = 'a'
-      const expectedState = text
-      const action = updateLetter(text)
-      expect(letterReducer(initialState, action)).to.deep.equal(expectedState)
+    tests.forEach(({should, initialState, expectedState, action}) => {
+      it(should, () => {
+        expect(letterReducer(initialState, action)).to.equal(expectedState)
+      })
     })
   })
 })
