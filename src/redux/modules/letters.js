@@ -20,7 +20,7 @@ const initialState = ''
 export default function letterReducer (state: string = initialState, action: Action): string {
   switch (action.type) {
     case UPDATE_LETTER:
-      return action.text
+      return action.text ? action.text : state
     default:
       return state
   }
