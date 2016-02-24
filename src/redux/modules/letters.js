@@ -2,10 +2,15 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
+export const UPDATE_LETTER = 'UPDATE_LETTER'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+export const updateLetter = (text: string): Action => ({
+  type: UPDATE_LETTER,
+  text
+})
 
 // ------------------------------------
 // Action Handlers
