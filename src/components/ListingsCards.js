@@ -1,5 +1,6 @@
 /* @flow */
 import React, { PropTypes } from 'react'
+import _ from 'lodash'
 
 // Flow types here
 type Props = {
@@ -11,11 +12,18 @@ export class ListingsCards extends React.Component<void, Props, void> {
     listingsData: PropTypes.object.isRequired
   };
 
+  displayListingsCards () {
+    if (!_.isEmpty(this.props.listingsData)) {
+      return <pre>{JSON.stringify(this.props.listingsData)}</pre>
+    }
+    return
+  }
+
   render () {
     return (
       <div>
         listings cards
-        <pre>{JSON.stringify(this.props.listingsData)}</pre>
+        {this.displayListingsCards()}
       </div>
     )
   }
