@@ -12,6 +12,5 @@ export default (store) => (
       <IndexRoute component={HomeView} />
     </Route>
     // add a no match component
-    // <Route path='*' component={NoMatch} />
   </Route>
 )
