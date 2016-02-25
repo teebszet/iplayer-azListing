@@ -6,6 +6,7 @@ type Props = {
   updateLetter: Function
 }
 
+// TODO get these from the API
 const az = ['a', 'b', 'c', 'd']
 // stupid dumb component...
 export class LettersNav extends React.Component<void, Props, void> {

@@ -17,7 +17,7 @@ describe('(Redux Module) Letter', () => {
 
   describe('(Action) UPDATE_LETTER', () => {
     it('should update the letter', () => {
-      const text = 'a'
+      const text = 'd'
       const expectedAction = {
         type: UPDATE_LETTER,
         text
@@ -27,7 +27,7 @@ describe('(Redux Module) Letter', () => {
   })
 
   describe('(Reducer) Letter', () => {
-    let tests = [
+    const tests = [
       {
         should: 'should return same state if invalid action type',
         initialState: '',
@@ -38,12 +38,12 @@ describe('(Redux Module) Letter', () => {
         }
       },
       {
-        should: 'should return letter if no initial state',
+        should: 'should return new state if no initial state',
         initialState: undefined,
-        expectedState: 'a',
+        expectedState: 'b',
         action: {
           type: 'UPDATE_LETTER',
-          text: 'a'
+          text: 'b'
         }
       },
       {
@@ -62,7 +62,7 @@ describe('(Redux Module) Letter', () => {
           text: 'a'
         },
         expectedState: 'a'
-      },
+      }
     ]
 
     tests.forEach(({should, initialState, expectedState, action}) => {
