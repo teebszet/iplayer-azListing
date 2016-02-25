@@ -40,8 +40,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   updateLetter: ({target: {id: letter}}) => {
-    console.log('you clicked on ' + letter)
-    updateLetter(letter)
+    dispatch(updateLetter(letter))
   }
 })
 export default connect(
