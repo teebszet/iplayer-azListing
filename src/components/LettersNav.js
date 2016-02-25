@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 
 // Flow types here
 type Props = {
-  updateLetter: Function
+  onClick: Function
 }
 
 // TODO get these from the API
@@ -13,7 +13,7 @@ const az = ['a', 'b', 'c', 'd']
 export class LettersNav extends React.Component<void, Props, void> {
   static propTypes = {
     onClick: PropTypes.func.isRequired
-  }
+  };
 
   render () {
     return (

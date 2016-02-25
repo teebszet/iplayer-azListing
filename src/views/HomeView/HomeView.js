@@ -3,10 +3,12 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updateLetter } from '../../redux/modules/letters'
 import { LettersNav } from '../../components/LettersNav'
+import { ListingsCards } from '../../components/ListingsCards'
 
 // Flow types here
 type Props = {
   letter: string,
+  listingsData: Object,
   updateLetter: Function
 }
 
@@ -14,8 +16,9 @@ type Props = {
 export class HomeView extends React.Component<void, Props, void> {
   static propTypes = {
     letter: PropTypes.string.isRequired,
+    listingsData: PropTypes.object.isRequired,
     updateLetter: PropTypes.func.isRequired
-  }
+  };
 
   render () {
     return (
@@ -23,10 +26,10 @@ export class HomeView extends React.Component<void, Props, void> {
         <h1>iPlayer A-Z Listings</h1>
         <div className='row'>
           <div className='col-md-2'>
-            <LettersNav onClick={this.props.updateLetter}/>
+            <LettersNav onClick={this.props.updateLetter} />
           </div>
           <div className='col-md-10'>
-            Listing content
+            <ListingsCards listingsData={this.props.listingsData} />
           </div>
         </div>
       </div>
@@ -36,7 +39,8 @@ export class HomeView extends React.Component<void, Props, void> {
 
 // connect component to store
 const mapStateToProps = (state) => ({
-  letter: state.letter
+  letter: state.letter,
+  listingsData: state.listingsData
 })
 const mapDispatchToProps = (dispatch) => ({
   updateLetter: ({target: {id: letter}}) => {
