@@ -38,23 +38,21 @@ describe('(Component) LettersNav', function () {
     expect(_component.type).to.equal('ul')
   })
 
-  describe('An <a href> item', function () {
-    let _href
+  describe('An <a> item is rendered by <Link>', function () {
+    let _anchor
 
     beforeEach(() => {
-      _href = TestUtils.scryRenderedDOMComponentsWithTag(_rendered, 'a')[0]
+      _anchor = TestUtils.scryRenderedDOMComponentsWithTag(_rendered, 'a')[0]
     })
 
     it('should be rendered.', function () {
-      expect(_href).to.exist
+      expect(_anchor).to.exist
     })
 
     it('should dispatch an action when clicked.', function () {
       _spies.dispatch.should.have.not.been.called
-      TestUtils.Simulate.click(_href)
+      TestUtils.Simulate.click(_anchor)
       _spies.dispatch.should.have.been.called
     })
   })
-
-
 })

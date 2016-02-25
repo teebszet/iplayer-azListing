@@ -1,5 +1,6 @@
 /* @flow */
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 
 // Flow types here
 type Props = {
@@ -19,11 +20,12 @@ export class LettersNav extends React.Component<void, Props, void> {
       <ul>
         {az.map((e) =>
           <li key={e}>
-            <a href='#'
+            <Link
+              to={`/listings/${e}`}
               onClick={this.props.onClick}
               id={e}>
-              {e}
-            </a>
+              {e.toUpperCase()}
+            </Link>
           </li>
         )}
       </ul>

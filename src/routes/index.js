@@ -8,5 +8,10 @@ import HomeView from 'views/HomeView/HomeView'
 export default (store) => (
   <Route path='/' component={CoreLayout}>
     <IndexRoute component={HomeView} />
+    <Route path='listings/:letter' component={CoreLayout}>
+      <IndexRoute component={HomeView} />
+    </Route>
+    // add a no match component
+    // <Route path='*' component={NoMatch} />
   </Route>
 )
