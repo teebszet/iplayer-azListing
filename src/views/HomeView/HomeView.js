@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updateLetter } from '../../redux/modules/letters'
+import { fetchListingsIfNeeded } from '../../redux/modules/listingsData'
 import { LettersNav } from '../../components/LettersNav'
 import { ListingsCards } from '../../components/ListingsCards'
 
@@ -45,6 +46,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateLetter: ({target: {id: letter}}) => {
     dispatch(updateLetter(letter))
+    dispatch(fetchListingsIfNeeded(letter))
   }
 })
 export default connect(

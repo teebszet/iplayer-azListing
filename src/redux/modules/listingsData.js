@@ -1,4 +1,6 @@
 /* @flow */
+import fetch from 'isomorphic-fetch'
+
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -15,25 +17,6 @@ export const FETCH_LISTINGS_FAILURE = 'FETCH_LISTINGS_FAILURE'
 // Action Creators
 // ------------------------------------
 
-export const fetchListingsRequest = (url: Object): Action => ({
-  type: FETCH_LISTINGS_REQUEST,
-  url
-})
-
-export const fetchListingsSuccess = (data: Object): Action => ({
-  type: FETCH_LISTINGS_SUCCESS,
-  data
-})
-
-export const fetchListingsFailure = (data: Object): Action => ({
-  type: FETCH_LISTINGS_FAILURE,
-  data
-})
-
-// ------------------------------------
-// Actions
-// ------------------------------------
-
 // UI actions
 export const selectLetter = (letter: string): Action => ({
   type: SELECT_LETTER,
@@ -46,43 +29,82 @@ export const invalidateLetter = (letter: string): Action => ({
 })
 
 // Network actions
-export const requestListings = (letter: string): Action => ({
-  type: REQUEST_LISTINGS,
+
+export const fetchListingsRequest = (letter: string): Action => ({
+  type: FETCH_LISTINGS_REQUEST,
   letter
 })
 
-export const receiveListings = (letter: string, json): Action => ({
-  type: RECEIVE_LISTINGS,
+export const fetchListingsSuccess = (letter: string, json: Object): Action => ({
+  type: FETCH_LISTINGS_SUCCESS,
   letter,
-  posts: json.data.children.map((child) => child.data), // TODO check API schema
+  listings: json.data.children.map((child) => child.data), // TODO check API schema
   nextPageURL: json.nextURL, // TODO check the API schema
   receivedAt: Date.now()
 })
 
-// TODO implement an error handling action
+export const fetchListingsFailure = (letter: string, json: Object): Action => ({
+  type: FETCH_LISTINGS_FAILURE,
+  letter,
+  error: json.error // TODO check API schema
+})
+
+// Async action thunks
+function fetchListings (letter: string): Function {
+  return (dispatch) => {
+    dispatch(fetchListingsRequest(letter))
+    return fetch(`https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=1`) // TODO pagination
+      .then((response) => response.json())
+      .then((json) => dispatch(fetchListingsSuccess(letter, json))) // TODO dispatch failure if error
+  }
+}
+
+function shouldFetchListings (state: Object, letter: string): bool {
+  const listings = state.listingsData[letter]
+  if (!listings) {
+    return true
+  } else if (listings.isFetching) {
+    return false
+  } else {
+    return listings.didInvalidate
+  }
+}
+
+export function fetchListingsIfNeeded (letter: string): Promise {
+  return (dispatch, getState) => {
+    if (shouldFetchListings(getState(), letter)) {
+      return dispatch(fetchListings(letter))
+    } else {
+      // Let the calling code know there's nothing to wait for.
+      return Promise.resolve()
+    }
+  }
+}
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 
-function listings (state = {
+function listingsReducer (state = {
   isFetching: false,
   didInvalidate: false,
   fetchedPageCount: 0,
   nextPageURL: '',
-  items: []
+  items: [],
+  lastUpdated: undefined,
+  error: undefined
 }, action) {
   switch (action.type) {
     case INVALIDATE_LETTER:
       return {...state, ...{
         didInvalidate: true
       }}
-    case REQUEST_LISTINGS:
+    case FETCH_LISTINGS_REQUEST:
       return {...state, ...{
         isFetching: true,
         didInvalidate: false
       }}
-    case RECEIVE_LISTINGS:
+    case FETCH_LISTINGS_SUCCESS:
       return {...state, ...{
         isFetching: false,
         didInvalidate: false,
@@ -90,6 +112,12 @@ function listings (state = {
         nextPageURL: action.nextPageURL,
         items: action.posts, // TODO possibly need to decide to append or replace with two separate actions
         lastUpdated: action.receivedAt
+      }}
+    case FETCH_LISTINGS_FAILURE:
+      return {...state, ...{
+        isFetching: false,
+        didInvalidate: false, // TODO do we set this to true or handle an error some other way?
+        error: action.error
       }}
     default:
       return state
@@ -99,10 +127,11 @@ function listings (state = {
 export default function listingsByLetterReducer (state: Object = {}, action: Action): Object {
   switch (action.type) {
     case INVALIDATE_LETTER:
-    case RECEIVE_LISTINGS:
-    case REQUEST_LISTINGS:
+    case FETCH_LISTINGS_REQUEST:
+    case FETCH_LISTINGS_SUCCESS:
+    case FETCH_LISTINGS_FAILURE:
       return {...state, ...{
-        [action.letter]: listings(state[action.letter], action)
+        [action.letter]: listingsReducer(state[action.letter], action)
       }}
     default:
       return state
