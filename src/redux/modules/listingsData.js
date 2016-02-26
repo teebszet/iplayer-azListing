@@ -1,6 +1,5 @@
 /* @flow */
 import fetch from 'isomorphic-fetch'
-import _ from 'lodash'
 
 // ------------------------------------
 // Constants
@@ -37,10 +36,16 @@ export const fetchListingsRequest = (letter: string): Action => ({
 })
 
 export const fetchListingsSuccess = (letter: string, json: Object): Action => {
+  // TODO is there a better place to store schema info?
+  //
+  // wow, ES6 destructuring so useful with APIs! originally used lodash map -> pick,
+  // but this seems cleaner:
   const listings = json.atoz_programmes.elements
-    .map((programme) =>
-      _.pick(programme, ['title', 'images', 'lexical_sort_letter']) // TODO is there a better place to store schema?
-    )
+    .map(({title, lexical_sort_letter, images: {standard: image}}) => ({
+      title,
+      letter: lexical_sort_letter.toLowerCase(),
+      image
+    }))
   return {
     type: FETCH_LISTINGS_SUCCESS,
     letter,

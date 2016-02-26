@@ -1,6 +1,6 @@
 /* @flow */
 import React, { PropTypes } from 'react'
-import _ from 'lodash'
+import { isEmpty } from 'lodash'
 
 // Flow types here
 type Props = {
@@ -13,7 +13,7 @@ export class ListingsCards extends React.Component<void, Props, void> {
   };
 
   displayListingsCards () {
-    if (!_.isEmpty(this.props.listingsData)) {
+    if (!isEmpty(this.props.listingsData)) {
       return <pre>{JSON.stringify(this.props.listingsData)}</pre>
     }
     return
