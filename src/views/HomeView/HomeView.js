@@ -30,7 +30,9 @@ export class HomeView extends React.Component<void, Props, void> {
             <LettersNav onClick={this.props.updateLetter} />
           </div>
           <div className='col-md-10'>
-            <ListingsCards listingsData={this.props.listingsData} />
+            <ListingsCards
+              listingsData={this.props.listingsData}
+            />
           </div>
         </div>
       </div>
@@ -41,7 +43,7 @@ export class HomeView extends React.Component<void, Props, void> {
 // connect component to store
 const mapStateToProps = (state) => ({
   letter: state.letter,
-  listingsData: state.listingsData
+  listingsData: state.letter ? state.listingsData[state.letter] : {}
 })
 const mapDispatchToProps = (dispatch) => ({
   updateLetter: ({target: {id: letter}}) => {
