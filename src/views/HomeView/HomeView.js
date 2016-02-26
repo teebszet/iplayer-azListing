@@ -13,7 +13,7 @@ type Props = {
   updateLetter: Function
 }
 
-// declare component as a stateless function
+// declare component
 export class HomeView extends React.Component<void, Props, void> {
   static propTypes = {
     letter: PropTypes.string.isRequired,

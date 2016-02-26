@@ -117,13 +117,17 @@ function listingsReducer (state = {
         didInvalidate: false
       }}
     case FETCH_LISTINGS_SUCCESS:
-      return {...state, ...{
-        isFetching: false,
-        didInvalidate: false,
-        fetchedPageCount: state.fetchedPageCount + 1,
-        items: action.listings, // TODO pagination will append to this
-        lastUpdated: action.receivedAt
-      }}
+      if (!action.listings || !action.receivedAt) {
+        return state
+      } else {
+        return {...state, ...{
+          isFetching: false,
+          didInvalidate: false,
+          fetchedPageCount: state.fetchedPageCount + 1,
+          items: action.listings, // TODO pagination will append to this
+          lastUpdated: action.receivedAt
+        }}
+      }
     case FETCH_LISTINGS_FAILURE:
       return {...state, ...{
         isFetching: false,
@@ -141,9 +145,13 @@ export default function listingsByLetterReducer (state: Object = {}, action: Act
     case FETCH_LISTINGS_REQUEST:
     case FETCH_LISTINGS_SUCCESS:
     case FETCH_LISTINGS_FAILURE:
-      return {...state, ...{
-        [action.letter]: listingsReducer(state[action.letter], action)
-      }}
+      if (!action.letter) {
+        return state
+      } else {
+        return {...state, ...{
+          [action.letter]: listingsReducer(state[action.letter], action)
+        }}
+      }
     default:
       return state
   }

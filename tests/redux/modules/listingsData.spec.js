@@ -1,23 +1,51 @@
 import {
-  FETCH_LISTINGS_DATA,
-  fetchListingsData,
+  FETCH_LISTINGS_REQUEST,
+  FETCH_LISTINGS_SUCCESS,
+  FETCH_LISTINGS_FAILURE,
+  fetchListingsRequest,
+  fetchListingsSuccess,
+  fetchListingsFailure,
+  fetchListingsIfNeeded,
   default as listingsDataReducer
 } from 'redux/modules/listingsData'
 
 describe('(Redux Module) ListingsData', () => {
-  it('should export a constant FETCH_LISTINGS_DATA.', () => {
-    expect(FETCH_LISTINGS_DATA).to.equal('FETCH_LISTINGS_DATA')
+
+  // constant exports
+  it('should export a constant FETCH_LISTINGS_REQUEST.', () => {
+    expect(FETCH_LISTINGS_REQUEST).to.equal('FETCH_LISTINGS_REQUEST')
   })
-  it('should export a function fetchListingsData.', () => {
-    expect(fetchListingsData).to.be.a('function')
+  it('should export a constant FETCH_LISTINGS_SUCCESS.', () => {
+    expect(FETCH_LISTINGS_SUCCESS).to.equal('FETCH_LISTINGS_SUCCESS')
   })
+  it('should export a constant FETCH_LISTINGS_FAILURE.', () => {
+    expect(FETCH_LISTINGS_FAILURE).to.equal('FETCH_LISTINGS_FAILURE')
+  })
+
+  // action creator exports
+  it('should export a function fetchListingsRequest.', () => {
+    expect(fetchListingsRequest).to.be.a('function')
+  })
+  it('should export a function fetchListingsSuccess.', () => {
+    expect(fetchListingsSuccess).to.be.a('function')
+  })
+  it('should export a function fetchListingsFailure.', () => {
+    expect(fetchListingsFailure).to.be.a('function')
+  })
+
+  // thunk action creator exports
+  it('should export a function fetchListingsIfNeeded.', () => {
+    expect(fetchListingsIfNeeded).to.be.a('function')
+  })
+
+  // reducer exports
   it('should export a function listingsDataReducer.', () => {
     expect(listingsDataReducer).to.be.a('function')
   })
 
-  // TODO need to mock the middleware fetch here
+  // TODO need to mock the thunk-middleware fetch here
   // describe('(Action) FETCH_LISTINGS_DATA', () => {
-  //   it('should return the action for fetchListingsData', () => {
+  //   it('should return the action for fetchListings', () => {
   //     const letter = 'd'
   //     const expectedAction = {
   //       type: FETCH_LISTINGS_DATA,
@@ -35,34 +63,26 @@ describe('(Redux Module) ListingsData', () => {
         expectedState: {},
         action: {
           type: 'no action for this type',
-          data: {somevalid: 'data'}
+          letter: 'a'
         }
       },
       {
-        should: 'should return new state if no initial state',
-        initialState: undefined,
-        expectedState: {listings: 'data'},
-        action: {
-          type: 'FETCH_LISTINGS_DATA',
-          data: {listings: 'data'}
-        }
-      },
-      {
-        should: 'should return {} if no initial state and no letter',
-        initialState: undefined,
-        expectedState: {},
-        action: {
-          type: 'FETCH_LISTINGS_DATA',
-        }
-      },
-      {
-        should: 'should return the new data in state',
+        should: 'should return a new state as expected',
         initialState: {},
         action: {
-          type: 'FETCH_LISTINGS_DATA',
-          data: {listings: 'data'}
+          type: 'FETCH_LISTINGS_REQUEST',
+          letter: 'a'
         },
-        expectedState: {listings: 'data'},
+        expectedState: {
+          'a': {
+            isFetching: true,
+            didInvalidate: false,
+            fetchedPageCount: 0,
+            items: [],
+            lastUpdated: undefined,
+            error: undefined
+          }
+        },
       }
     ]
 
