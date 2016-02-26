@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 import fs from 'fs-extra'
 import _debug from 'debug'
 import webpackCompiler from '../build/webpack-compiler'

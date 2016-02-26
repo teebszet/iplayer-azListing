@@ -1,5 +1,6 @@
 /* @flow */
 import fetch from 'isomorphic-fetch'
+import _ from 'lodash'
 
 // ------------------------------------
 // Constants
@@ -35,13 +36,18 @@ export const fetchListingsRequest = (letter: string): Action => ({
   letter
 })
 
-export const fetchListingsSuccess = (letter: string, json: Object): Action => ({
-  type: FETCH_LISTINGS_SUCCESS,
-  letter,
-  listings: json.data.children.map((child) => child.data), // TODO check API schema
-  nextPageURL: json.nextURL, // TODO check the API schema
-  receivedAt: Date.now()
-})
+export const fetchListingsSuccess = (letter: string, json: Object): Action => {
+  const listings = json.atoz_programmes.elements
+    .map((programme) =>
+      _.pick(programme, ['title', 'images', 'lexical_sort_letter']) // TODO is there a better place to store schema?
+    )
+  return {
+    type: FETCH_LISTINGS_SUCCESS,
+    letter,
+    listings,
+    receivedAt: Date.now()
+  }
+}
 
 export const fetchListingsFailure = (letter: string, json: Object): Action => ({
   type: FETCH_LISTINGS_FAILURE,
@@ -53,7 +59,9 @@ export const fetchListingsFailure = (letter: string, json: Object): Action => ({
 function fetchListings (letter: string): Function {
   return (dispatch) => {
     dispatch(fetchListingsRequest(letter))
-    return fetch(`https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=1`) // TODO pagination
+    const uri = `https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=1`
+    console.log(uri)
+    return fetch(uri) // TODO pagination
       .then((response) => response.json())
       .then((json) => dispatch(fetchListingsSuccess(letter, json))) // TODO dispatch failure if error
   }
@@ -70,7 +78,7 @@ function shouldFetchListings (state: Object, letter: string): bool {
   }
 }
 
-export function fetchListingsIfNeeded (letter: string): Promise {
+export function fetchListingsIfNeeded (letter: string): Function {
   return (dispatch, getState) => {
     if (shouldFetchListings(getState(), letter)) {
       return dispatch(fetchListings(letter))
@@ -89,7 +97,6 @@ function listingsReducer (state = {
   isFetching: false,
   didInvalidate: false,
   fetchedPageCount: 0,
-  nextPageURL: '',
   items: [],
   lastUpdated: undefined,
   error: undefined
@@ -109,8 +116,7 @@ function listingsReducer (state = {
         isFetching: false,
         didInvalidate: false,
         fetchedPageCount: state.fetchedPageCount + 1,
-        nextPageURL: action.nextPageURL,
-        items: action.posts, // TODO possibly need to decide to append or replace with two separate actions
+        items: action.listings, // TODO pagination will append to this
         lastUpdated: action.receivedAt
       }}
     case FETCH_LISTINGS_FAILURE:
