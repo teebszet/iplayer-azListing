@@ -21,7 +21,7 @@ export class LettersNav extends React.Component<void, Props, void> {
         {az.map((e) =>
           <li key={e}>
             <Link
-              to={`/listings/${e}`}
+              to={`/${e}`}
               onClick={this.props.onClick}
               id={e}>
               {e.toUpperCase()}

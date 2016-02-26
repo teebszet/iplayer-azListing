@@ -22,7 +22,6 @@ export class ListingsCards extends React.Component<void, Props, void> {
   render () {
     return (
       <div>
-        listings cards
         {this.displayListingsCards()}
       </div>
     )
