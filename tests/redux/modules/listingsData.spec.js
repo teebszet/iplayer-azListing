@@ -1,4 +1,5 @@
 import {
+  PAGINATE_LETTER,
   FETCH_LISTINGS_REQUEST,
   FETCH_LISTINGS_SUCCESS,
   FETCH_LISTINGS_FAILURE,
@@ -13,6 +14,9 @@ import {
 describe('(Redux Module) ListingsData', () => {
 
   // constant exports
+  it('should export a constant PAGINATE_LETTER.', () => {
+    expect(PAGINATE_LETTER).to.equal('PAGINATE_LETTER')
+  })
   it('should export a constant FETCH_LISTINGS_REQUEST.', () => {
     expect(FETCH_LISTINGS_REQUEST).to.equal('FETCH_LISTINGS_REQUEST')
   })

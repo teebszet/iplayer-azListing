@@ -6,8 +6,7 @@ import fetch from 'isomorphic-fetch'
 // ------------------------------------
 export const SELECT_LETTER = 'SELECT_LETTER'
 export const INVALIDATE_LETTER = 'INVALIDATE_LETTER'
-export const REQUEST_LISTINGS = 'REQUEST_LISTINGS'
-export const RECEIVE_LISTINGS = 'RECEIVE_LISTINGS'
+export const PAGINATE_LETTER = 'PAGINATE_LETTER'
 
 export const FETCH_LISTINGS_REQUEST = 'FETCH_LISTINGS_REQUEST'
 export const FETCH_LISTINGS_SUCCESS = 'FETCH_LISTINGS_SUCCESS'
@@ -25,6 +24,11 @@ export const selectLetter = (letter: string): Action => ({
 
 export const invalidateLetter = (letter: string): Action => ({
   type: INVALIDATE_LETTER,
+  letter
+})
+
+export const paginateLetter = (letter: string): Action => ({
+  type: PAGINATE_LETTER,
   letter
 })
 
