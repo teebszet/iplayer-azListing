@@ -19,9 +19,17 @@ export class HomeView extends React.Component<void, Props, void> {
   static propTypes = {
     letter: PropTypes.string.isRequired,
     listingsItems: PropTypes.array.isRequired,
+    updateLetterFromClick: PropTypes.func.isRequired,
     updateLetter: PropTypes.func.isRequired,
-    paginateLetter: PropTypes.func.isRequired
+    paginateLetter: PropTypes.func.isRequired,
+    params: PropTypes.object
   };
+
+  componentDidMount() {
+    if (this.props.params.letter !== this.props.letter) {
+      this.props.updateLetter(this.props.params.letter)
+    }
+  }
 
   render () {
     return (
@@ -29,7 +37,7 @@ export class HomeView extends React.Component<void, Props, void> {
         <h1>iPlayer A-Z Listings</h1>
         <div className='row'>
           <div className='col-md-2'>
-            <LettersNav onClick={this.props.updateLetter} />
+            <LettersNav onClick={this.props.updateLetterFromClick} />
           </div>
           <div className='col-md-10'>
             <ListingsCards listingsItems={this.props.listingsItems} />
@@ -49,7 +57,11 @@ const mapStateToProps = (state) => ({
   listingsItems: state.letter ? state.listingsData[state.letter].items : []
 })
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  updateLetter: ({target: {id: letter}}) => {
+  updateLetterFromClick: ({target: {id: letter}}) => {
+    dispatch(updateLetter(letter))
+    dispatch(fetchListingsIfNeeded(letter))
+  },
+  updateLetter: (letter) => {
     dispatch(updateLetter(letter))
     dispatch(fetchListingsIfNeeded(letter))
   },
