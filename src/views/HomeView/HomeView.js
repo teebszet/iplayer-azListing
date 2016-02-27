@@ -1,10 +1,12 @@
 /* @flow */
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { isEmpty } from 'lodash'
 import { updateLetter } from '../../redux/modules/letters'
 import { fetchListingsIfNeeded } from '../../redux/modules/listingsData'
 import { LettersNav } from '../../components/LettersNav'
 import { ListingsCards } from '../../components/ListingsCards'
+import { MoreButton } from '../../components/MoreButton'
 
 // Flow types here
 type Props = {
@@ -25,9 +27,15 @@ export class HomeView extends React.Component<void, Props, void> {
     params: PropTypes.object
   };
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.params.letter !== this.props.letter) {
       this.props.updateLetter(this.props.params.letter)
+    }
+  }
+
+  displayMoreButton () {
+    if (!isEmpty(this.props.listingsItems)) {
+      return <MoreButton onClick={this.props.paginateLetter} />
     }
   }
 
@@ -41,9 +49,7 @@ export class HomeView extends React.Component<void, Props, void> {
           </div>
           <div className='col-md-10'>
             <ListingsCards listingsItems={this.props.listingsItems} />
-            <button type='button' onClick={this.props.paginateLetter}>
-              ...more
-            </button>
+            {this.displayMoreButton()}
           </div>
         </div>
       </div>
@@ -66,7 +72,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(fetchListingsIfNeeded(letter))
   },
   paginateLetter: () => {
-    console.log('paginateLetter called', ownProps.params.letter)
     const paginate = true
     dispatch(fetchListingsIfNeeded(ownProps.params.letter, paginate))
   }
