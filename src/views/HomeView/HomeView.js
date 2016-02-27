@@ -9,7 +9,7 @@ import { ListingsCards } from '../../components/ListingsCards'
 // Flow types here
 type Props = {
   letter: string,
-  listingsData: Object,
+  listingsItems: Array,
   updateLetter: Function
 }
 
@@ -17,7 +17,7 @@ type Props = {
 export class HomeView extends React.Component<void, Props, void> {
   static propTypes = {
     letter: PropTypes.string.isRequired,
-    listingsData: PropTypes.object.isRequired,
+    listingsItems: PropTypes.array.isRequired,
     updateLetter: PropTypes.func.isRequired
   };
 
@@ -31,7 +31,7 @@ export class HomeView extends React.Component<void, Props, void> {
           </div>
           <div className='col-md-10'>
             <ListingsCards
-              listingsData={this.props.listingsData}
+              listingsItems={this.props.listingsItems}
             />
           </div>
         </div>
@@ -43,7 +43,7 @@ export class HomeView extends React.Component<void, Props, void> {
 // connect component to store
 const mapStateToProps = (state) => ({
   letter: state.letter,
-  listingsData: state.letter ? state.listingsData[state.letter] : {}
+  listingsItems: state.letter ? state.listingsData[state.letter].items : []
 })
 const mapDispatchToProps = (dispatch) => ({
   updateLetter: ({target: {id: letter}}) => {

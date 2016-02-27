@@ -4,38 +4,39 @@ import { isEmpty } from 'lodash'
 
 // Flow types here
 type Props = {
-  listingsData: Object
+  listingsItems: Array
 };
 
-export const Image = (image) =>
-  <img src={image} />
-
-export const Content = (title) =>
-  <h3>{title}</h3>
-
-export const Card = ({image, title}) => {
-  console.log(title)
+export const Card = ({item: {image, title}}) => {
   return (
-    <div>
-      {title}
+    <div className='col-sm-6 col-md-4'>
+      <div className='thumbnail'>
+        <img src={image} alt={title} />
+        <div className='caption'>
+          <h4>{title}</h4>
+        </div>
+      </div>
     </div>
   )
 }
 
-
 export class ListingsCards extends React.Component<void, Props, void> {
   static propTypes = {
-    listingsData: PropTypes.object.isRequired
+    listingsItems: PropTypes.array.isRequired
   };
 
+  pickImageSize (image) {
+    return image.replace('{recipe}', '406x228')
+  }
+
   displayListingsCards () {
-    if (!isEmpty(this.props.listingsData)) {
-      const listings = this.props.listingsData.items
+    if (!isEmpty(this.props.listingsItems)) {
+      const listings = this.props.listingsItems
         .map((item) => {
+          item.image = this.pickImageSize(item.image)
           return <Card item={item} />
-          //return <div>hello</div>
         })
-      console.log(listings)
+      // console.log(listings)
       return listings
     }
   }
