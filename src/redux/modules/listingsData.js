@@ -33,10 +33,11 @@ export const fetchListingsSuccess = (letter: string, json: Object): Action => {
   // wow, ES6 destructuring so useful with APIs! originally used lodash map -> pick,
   // but this seems cleaner:
   const listings = json.atoz_programmes.elements
-    .map(({title, lexical_sort_letter, images: {standard: image}}) => ({
+    .map(({title, lexical_sort_letter, images: {standard: image}, id}) => ({
       title,
       letter: lexical_sort_letter.toLowerCase(),
-      image
+      image,
+      id
     }))
   return {
     type: FETCH_LISTINGS_SUCCESS,
