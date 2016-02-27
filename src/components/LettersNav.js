@@ -7,8 +7,10 @@ type Props = {
   onClick: Function
 }
 
-// TODO get these from the API
-const az = ['a', 'b', 'c', 'd']
+// TODO get these from the API and store as state (possible unicode characters?)
+const az = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0-9']
+
 // stupid dumb component...
 export class LettersNav extends React.Component<void, Props, void> {
   static propTypes = {
