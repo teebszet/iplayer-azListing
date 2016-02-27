@@ -4,9 +4,7 @@ import fetch from 'isomorphic-fetch'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SELECT_LETTER = 'SELECT_LETTER'
 export const INVALIDATE_LETTER = 'INVALIDATE_LETTER'
-export const PAGINATE_LETTER = 'PAGINATE_LETTER'
 
 export const FETCH_LISTINGS_REQUEST = 'FETCH_LISTINGS_REQUEST'
 export const FETCH_LISTINGS_SUCCESS = 'FETCH_LISTINGS_SUCCESS'
@@ -17,18 +15,8 @@ export const FETCH_LISTINGS_FAILURE = 'FETCH_LISTINGS_FAILURE'
 // ------------------------------------
 
 // UI actions
-export const selectLetter = (letter: string): Action => ({
-  type: SELECT_LETTER,
-  letter
-})
-
 export const invalidateLetter = (letter: string): Action => ({
   type: INVALIDATE_LETTER,
-  letter
-})
-
-export const paginateLetter = (letter: string): Action => ({
-  type: PAGINATE_LETTER,
   letter
 })
 
@@ -68,37 +56,35 @@ export const fetchListingsFailure = (letter: string, json: Object): Action => ({
 function fetchListings (letter: string, page: number): Function {
   return (dispatch) => {
     dispatch(fetchListingsRequest(letter))
-    const uri = `fetching from https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=${page}`
-    console.log(uri)
+    const uri = `https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=${page}`
+    console.log('fetching from ' + uri)
     return fetch(uri)
       .then((response) => response.json())
       .then((json) => dispatch(fetchListingsSuccess(letter, json))) // TODO dispatch failure if error
   }
 }
 
-export function shouldFetchListings ({state, letter, paginate}): bool {
+export function shouldFetchListings ({state, letter, paginate}): bool|number {
   if (!letter || !state) {
-    return false 
+    return false
   }
 
   const listings = state.listingsData[letter]
   if (!listings) {
-    return true
+    return 1
   } else if (listings.isFetching) {
     return false
   } else if (paginate) {
-    return true
+    return listings.fetchedPageCount + 1
   } else {
-    return listings.didInvalidate
+    return listings.didInvalidate ? 1 : false
   }
 }
 
-export function fetchListingsIfNeeded (letter: string, page: number): Function {
+export function fetchListingsIfNeeded (letter: string, paginate: bool): Function {
   return (dispatch, getState) => {
-    // if (getState().fetchedPageCount
-    const paginate = true
-
-    if (shouldFetchListings({state: getState(), letter, paginate})) {
+    const page = shouldFetchListings({state: getState(), letter, paginate})
+    if (page) {
       return dispatch(fetchListings(letter, page))
     } else {
       // Let the calling code know there's nothing to wait for.
@@ -137,7 +123,7 @@ function listingsReducer (state = {
           isFetching: false,
           didInvalidate: false,
           fetchedPageCount: state.fetchedPageCount + 1,
-          items: action.listings, // TODO pagination will append to this
+          items: [...state.items, ...action.listings],
           lastUpdated: action.receivedAt
         }}
       }

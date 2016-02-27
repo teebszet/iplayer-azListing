@@ -10,7 +10,8 @@ import { ListingsCards } from '../../components/ListingsCards'
 type Props = {
   letter: string,
   listingsItems: Array,
-  updateLetter: Function
+  updateLetter: Function,
+  paginateLetter: Function
 }
 
 // declare component
@@ -18,7 +19,8 @@ export class HomeView extends React.Component<void, Props, void> {
   static propTypes = {
     letter: PropTypes.string.isRequired,
     listingsItems: PropTypes.array.isRequired,
-    updateLetter: PropTypes.func.isRequired
+    updateLetter: PropTypes.func.isRequired,
+    paginateLetter: PropTypes.func.isRequired
   };
 
   render () {
@@ -30,9 +32,10 @@ export class HomeView extends React.Component<void, Props, void> {
             <LettersNav onClick={this.props.updateLetter} />
           </div>
           <div className='col-md-10'>
-            <ListingsCards
-              listingsItems={this.props.listingsItems}
-            />
+            <ListingsCards listingsItems={this.props.listingsItems} />
+            <button type='button' onClick={this.props.paginateLetter}>
+              ...more
+            </button>
           </div>
         </div>
       </div>
@@ -45,10 +48,15 @@ const mapStateToProps = (state) => ({
   letter: state.letter,
   listingsItems: state.letter ? state.listingsData[state.letter].items : []
 })
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   updateLetter: ({target: {id: letter}}) => {
     dispatch(updateLetter(letter))
     dispatch(fetchListingsIfNeeded(letter))
+  },
+  paginateLetter: () => {
+    console.log('paginateLetter called', ownProps.params.letter)
+    const paginate = true
+    dispatch(fetchListingsIfNeeded(ownProps.params.letter, paginate))
   }
 })
 export default connect(

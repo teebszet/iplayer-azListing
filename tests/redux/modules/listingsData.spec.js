@@ -1,5 +1,4 @@
 import {
-  PAGINATE_LETTER,
   FETCH_LISTINGS_REQUEST,
   FETCH_LISTINGS_SUCCESS,
   FETCH_LISTINGS_FAILURE,
@@ -14,9 +13,6 @@ import {
 describe('(Redux Module) ListingsData', () => {
 
   // constant exports
-  it('should export a constant PAGINATE_LETTER.', () => {
-    expect(PAGINATE_LETTER).to.equal('PAGINATE_LETTER')
-  })
   it('should export a constant FETCH_LISTINGS_REQUEST.', () => {
     expect(FETCH_LISTINGS_REQUEST).to.equal('FETCH_LISTINGS_REQUEST')
   })
@@ -63,9 +59,9 @@ describe('(Redux Module) ListingsData', () => {
   describe('(Action) shouldFetchListings', () => {
     const tests = [
       {
-        should: 'should return true if there are no listings',
+        should: 'should return (page) 1 if there are no listings',
         input: {state: {listingsData: {}}, letter: 'a'},
-        expected: true
+        expected: 1
       },
       {
         should: 'should return false if there are listings, but isFetching',
@@ -78,9 +74,9 @@ describe('(Redux Module) ListingsData', () => {
         expected: false
       },
       {
-        should: 'should return true if there are listings, not isFetching, but we want to paginate',
-        input: {state: {listingsData: {'a': {}}}, letter: 'a', paginate: true},
-        expected: true
+        should: 'should return 2 if there are listings, not isFetching, but we want to paginate',
+        input: {state: {listingsData: {'a': {fetchedPageCount: 1}}}, letter: 'a', paginate: true},
+        expected: 2
       },
       {
         should: 'should return false if no letter',
