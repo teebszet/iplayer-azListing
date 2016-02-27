@@ -6,6 +6,7 @@ import {
   fetchListingsSuccess,
   fetchListingsFailure,
   fetchListingsIfNeeded,
+  shouldFetchListings,
   default as listingsDataReducer
 } from 'redux/modules/listingsData'
 
@@ -54,6 +55,47 @@ describe('(Redux Module) ListingsData', () => {
   //     expect(fetchListingsData(letter)).to.deep.equal(expectedAction)
   //   })
   // })
+
+  describe('(Action) shouldFetchListings', () => {
+    const tests = [
+      {
+        should: 'should return true if there are no listings',
+        input: {state: {listingsData: {}}, letter: 'a'},
+        expected: true
+      },
+      {
+        should: 'should return false if there are listings, but isFetching',
+        input: {state: {listingsData: {'a': {isFetching: true}}}, letter: 'a'},
+        expected: false
+      },
+      {
+        should: 'should return false if there are listings, isFetching, and paginate',
+        input: {state: {listingsData: {'a': {isFetching: true}}}, letter: 'a', paginate: true},
+        expected: false
+      },
+      {
+        should: 'should return true if there are listings, not isFetching, but we want to paginate',
+        input: {state: {listingsData: {'a': {}}}, letter: 'a', paginate: true},
+        expected: true
+      },
+      {
+        should: 'should return false if no letter',
+        input: {},
+        expected: false
+      },
+      {
+        should: 'should return false if no state',
+        input: {letter: 'a'},
+        expected: false
+      },
+    ]
+
+    tests.forEach(({should, input, expected}) => {
+      it(should, () => {
+        expect(shouldFetchListings(input)).to.equal(expected)
+      })
+    })
+  })
 
   describe('(Reducer) ListingsData', () => {
     const tests = [

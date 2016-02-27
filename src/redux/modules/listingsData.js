@@ -61,32 +61,41 @@ export const fetchListingsFailure = (letter: string, json: Object): Action => ({
 })
 
 // Async action thunks
-function fetchListings (letter: string): Function {
+function fetchListings (letter: string, page: number): Function {
   return (dispatch) => {
     dispatch(fetchListingsRequest(letter))
-    const uri = `https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=1`
+    const uri = `fetching from https://ibl.api.bbci.co.uk/ibl/v1/atoz/${letter}/programmes?page=${page}`
     console.log(uri)
-    return fetch(uri) // TODO pagination
+    return fetch(uri)
       .then((response) => response.json())
       .then((json) => dispatch(fetchListingsSuccess(letter, json))) // TODO dispatch failure if error
   }
 }
 
-function shouldFetchListings (state: Object, letter: string): bool {
+export function shouldFetchListings ({state, letter, paginate}): bool {
+  if (!letter || !state) {
+    return false 
+  }
+
   const listings = state.listingsData[letter]
   if (!listings) {
     return true
   } else if (listings.isFetching) {
     return false
+  } else if (paginate) {
+    return true
   } else {
     return listings.didInvalidate
   }
 }
 
-export function fetchListingsIfNeeded (letter: string): Function {
+export function fetchListingsIfNeeded (letter: string, page: number): Function {
   return (dispatch, getState) => {
-    if (shouldFetchListings(getState(), letter)) {
-      return dispatch(fetchListings(letter))
+    // if (getState().fetchedPageCount
+    const paginate = true
+
+    if (shouldFetchListings({state: getState(), letter, paginate})) {
+      return dispatch(fetchListings(letter, page))
     } else {
       // Let the calling code know there's nothing to wait for.
       return Promise.resolve()
