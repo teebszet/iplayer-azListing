@@ -24,8 +24,8 @@ export class HomeView extends React.Component<void, Props, void> {
     updateLetterFromClick: PropTypes.func.isRequired,
     updateLetter: PropTypes.func.isRequired,
     paginateLetter: PropTypes.func.isRequired,
-    remainingListings: PropTypes.number,
-    params: PropTypes.object
+    remainingListings: PropTypes.number.isRequired,
+    params: PropTypes.object.isRequired
   };
 
   componentDidMount () {

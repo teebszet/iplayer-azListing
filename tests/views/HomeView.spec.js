@@ -27,9 +27,14 @@ describe('(View) Home', function () {
     _props = {
       // props
       letter: '',
+      listingsItems: [],
+      params: {letter: '/'},
+      remainingListings: 0,
       ...bindActionCreators({
-        //action creators
+        // dispatch as props
         updateLetter: (_spies.updateLetter = sinon.spy()),
+        updateLetterFromClick: (_spies.updateLetterFromClick = sinon.spy()),
+        paginateLetter: (_spies.paginateLetter = sinon.spy())
       }, _spies.dispatch = sinon.spy())
     }
 

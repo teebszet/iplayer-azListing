@@ -25,6 +25,7 @@ describe('(Component) ListingsCards', function () {
   beforeEach(function () {
     _spies = {}
     _props = {
+      listingsItems: [],
       ...bindActionCreators({
         onClick: (_spies.onClick = sinon.spy()),
       }, _spies.dispatch = sinon.spy())
