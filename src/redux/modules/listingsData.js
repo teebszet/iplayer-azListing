@@ -39,10 +39,18 @@ export const fetchListingsSuccess = (letter: string, json: Object): Action => {
       image,
       id
     }))
+
+  let remainingListings = json.atoz_programmes.count -
+    (json.atoz_programmes.page * json.atoz_programmes.per_page)
+
+  if (remainingListings < 0) {
+    remainingListings = 0
+  }
   return {
     type: FETCH_LISTINGS_SUCCESS,
     letter,
     listings,
+    remainingListings,
     receivedAt: Date.now()
   }
 }
@@ -125,6 +133,7 @@ function listingsReducer (state = {
           didInvalidate: false,
           fetchedPageCount: state.fetchedPageCount + 1,
           items: [...state.items, ...action.listings],
+          remainingListings: action.remainingListings,
           lastUpdated: action.receivedAt
         }}
       }

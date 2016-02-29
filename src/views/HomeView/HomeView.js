@@ -24,6 +24,7 @@ export class HomeView extends React.Component<void, Props, void> {
     updateLetterFromClick: PropTypes.func.isRequired,
     updateLetter: PropTypes.func.isRequired,
     paginateLetter: PropTypes.func.isRequired,
+    remainingListings: PropTypes.number,
     params: PropTypes.object
   };
 
@@ -34,8 +35,11 @@ export class HomeView extends React.Component<void, Props, void> {
   }
 
   displayMoreButton () {
-    if (!isEmpty(this.props.listingsItems)) {
-      return <MoreButton onClick={this.props.paginateLetter} />
+    if (!isEmpty(this.props.listingsItems) && this.props.remainingListings > 0) {
+      return (
+        <MoreButton onClick={this.props.paginateLetter}
+          count={this.props.remainingListings}/>
+      )
     }
   }
 
@@ -60,7 +64,8 @@ export class HomeView extends React.Component<void, Props, void> {
 // connect component to store
 const mapStateToProps = (state) => ({
   letter: state.letter,
-  listingsItems: state.letter ? state.listingsData[state.letter].items : []
+  listingsItems: state.letter ? state.listingsData[state.letter].items : [],
+  remainingListings: state.letter ? state.listingsData[state.letter].remainingListings : 0
 })
 const mapDispatchToProps = (dispatch, ownProps) => ({
   updateLetterFromClick: ({target: {id: letter}}) => {
