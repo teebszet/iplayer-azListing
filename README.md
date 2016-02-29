@@ -17,4 +17,5 @@ basics
 
     git clone git@github.com:teebszet/iplayer-azListing.git
     npm install
+    npm test
     npm start
