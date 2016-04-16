@@ -20,7 +20,8 @@
     "test:dev": "npm run test -- --watch",
     "deploy": "better-npm-run deploy",
     "flow:check": "babel-node bin/flow-check",
-    "codecov": "cat coverage/*/lcov.info | codecov"
+    "codecov": "cat coverage/*/lcov.info | codecov",
+    "heroku-postbuild": "echo postbuild && npm run deploy"
   },
   "betterScripts": {
     "compile": {

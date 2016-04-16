@@ -1,6 +1,7 @@
 .DS_STORE
 *.log
 *npm-debug.log*
+/*.env
 
 *.swp
 *.un~
