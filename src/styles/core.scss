@@ -27,10 +27,25 @@
     border: none;
     color: white;
     padding: 15px 32px;
+    margin: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+  }
+
+  .active {
+    background-color: #F5D908;
+    border: none;
+    color: white;
+  }
+
+  nav {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    ul {
+        list-style-type: none; 
+    }   
   }
 
   *,

@@ -48,10 +48,14 @@ export class HomeView extends React.Component<void, Props, void> {
       <div className='container'>
         <h1>iPlayer A-Z Listings</h1>
         <div className='row'>
-          <div className='col-md-2'>
-            <LettersNav onClick={this.props.updateLetterFromClick} />
+          <div className='col-md-12'>
+            <LettersNav
+              onClick={this.props.updateLetterFromClick}
+              activeLetter={this.props.letter} />
           </div>
-          <div className='col-md-10'>
+        </div>
+        <div className='row'>
+          <div className='col-md-12'>
             <ListingsCards listingsItems={this.props.listingsItems} />
             {this.displayMoreButton()}
           </div>
@@ -64,8 +68,14 @@ export class HomeView extends React.Component<void, Props, void> {
 // connect component to store
 const mapStateToProps = (state) => ({
   letter: state.letter,
-  listingsItems: state.letter ? state.listingsData[state.letter].items : [],
-  remainingListings: state.letter ? state.listingsData[state.letter].remainingListings : 0
+  listingsItems:
+    (state.letter && state.listingsData[state.letter])
+      ? state.listingsData[state.letter].items
+      : [],
+  remainingListings:
+    (state.letter && state.listingsData[state.letter])
+      ? state.listingsData[state.letter].remainingListings
+      : 0
 })
 const mapDispatchToProps = (dispatch, ownProps) => ({
   updateLetterFromClick: ({target: {id: letter}}) => {

@@ -4,7 +4,8 @@ import { Link } from 'react-router'
 
 // Flow types here
 type Props = {
-  onClick: Function
+  onClick: Function,
+  activeLetter: string
 }
 
 // TODO get these from the API and store as state (possible unicode characters?)
@@ -14,23 +15,29 @@ const az = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 // stupid dumb component...
 export class LettersNav extends React.Component<void, Props, void> {
   static propTypes = {
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    activeLetter: PropTypes.string.isRequired
   };
 
   render () {
     return (
-      <ul>
-        {az.map((e) =>
-          <li key={e}>
-            <Link
-              to={`/${e}`}
-              onClick={this.props.onClick}
-              id={e}>
-              {e.toUpperCase()}
-            </Link>
-          </li>
-        )}
-      </ul>
+      <nav>
+        <ul className='nav nav-pills'>
+          {az.map((e) =>
+            <li
+              key={e}
+              className={e===this.props.activeLetter ? 'active' : ''}>
+              <Link
+                className='button-action'
+                to={`/${e}`}
+                onClick={this.props.onClick}
+                id={e}>
+                {e.toUpperCase()}
+              </Link>
+            </li>
+          )}
+        </ul>
+      </nav>
     )
   }
 }
