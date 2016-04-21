@@ -1,10 +1,12 @@
-iPlayer frontend for a-z listings
-=================================
+iPlayer frontend for a-z programmes
+===================================
 
 description
 -----------
 
-A frontend for the iPlayer's API displaying a-z listings 
+A frontend for the iPlayer's API displaying a-z programmes
+
+Automatic deploys here: https://iplayer-react.herokuapp.com
 
 requirements
 ------------
