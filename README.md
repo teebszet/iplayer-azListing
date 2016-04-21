@@ -8,6 +8,12 @@ A frontend for the iPlayer's API displaying a-z programmes
 
 Automatic deploys here: https://iplayer-react.herokuapp.com
 
+Simple example of React + Redux SPA, with:
+ * API request caching
+ * pagination
+ * react dev-tools and hot module replacement
+ * react-redux-router
+
 requirements
 ------------
 
